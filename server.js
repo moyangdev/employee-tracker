@@ -52,6 +52,15 @@ const initialQuestion = () => {
             case 'view all employees':
                 viewEmployees();
                 break;
+            case 'add a department':
+                addDepartment();
+                break;
+            case 'add a role':
+                viewEmployees();
+                break;
+            case 'add an employee':
+            viewEmployees();
+            break;
             default: 
             initialQuestion();
         }
@@ -67,7 +76,7 @@ db.query(sql, (err, res) => {
 
     console.table(res);
 
-    initialQuestion ();
+    initialQuestion();
 });
 }
 
@@ -79,20 +88,31 @@ db.query(sql, (err, res) => {
 
     console.table(res);
 
-    initialQuestion ();
+    initialQuestion();
 });
 }
 
-const viewEmployees = () => {
-let sql = `SELECT * FROM employees`
+function addDepartment() { 
 
-db.query(sql, (err, res) => {
-    if (err) throw err;
+inquirer.prompt([
+    {
+        name: "name",
+        type: "input",
+        message: "What department would you like to add? "
+    }
 
-    console.table(res);
-
-    initialQuestion ();
-});
+]).then(function(answers) {
+    db.query("INSERT INTO departments SET ?",
+        {
+            name: answers.name
+        },
+        function(err, res) {
+            if (err) throw err;
+            console.log(`New department added successfully!`);
+            initialQuestion();
+        }
+    )
+})
 }
 
 initialQuestion();
