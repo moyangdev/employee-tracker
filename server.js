@@ -92,6 +92,18 @@ db.query(sql, (err, res) => {
 });
 }
 
+const viewEmployees = () => {
+let sql = `SELECT * FROM employees`
+
+db.query(sql, (err, res) => {
+    if (err) throw err;
+
+    console.table(res);
+
+    initialQuestion();
+});
+}
+
 function addDepartment() { 
 inquirer.prompt([
     {
@@ -142,6 +154,46 @@ inquirer.prompt([
         function(err, res) {
             if (err) throw err;
             console.log(`New role added successfully!`);
+            initialQuestion();
+        }
+    )
+})
+}
+
+function addEmployee() { 
+inquirer.prompt([
+    {
+        name: "first_name",
+        type: "input",
+        message: "What's the employee's first name?"
+    },
+    {
+        name: "last_name",
+        type: "input",
+        message: "What's the employee's last name?"
+    },
+    {
+        name: "role_id",
+        type: "input",
+        message: "What's the employee's role id?",
+    },
+    {
+        name: "manager_id",
+        type: "input",
+        message: "What's the employee manager's id?",
+    }
+
+]).then(function(answers) {
+    db.query('INSERT INTO employees SET ?',
+        {
+            first_name: answers.first_name,
+            last_name: answers.last_name,
+            role_id: answers.role_id,
+            manager_id: answers.manager_id,
+        },
+        function(err, res) {
+            if (err) throw err;
+            console.log(`New employee added successfully!`);
             initialQuestion();
         }
     )
