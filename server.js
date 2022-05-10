@@ -56,10 +56,10 @@ const initialQuestion = () => {
                 addDepartment();
                 break;
             case 'add a role':
-                viewEmployees();
+                addRole();
                 break;
             case 'add an employee':
-            viewEmployees();
+                addEmployee();
             break;
             default: 
             initialQuestion();
@@ -93,22 +93,55 @@ db.query(sql, (err, res) => {
 }
 
 function addDepartment() { 
-
 inquirer.prompt([
     {
         name: "name",
         type: "input",
-        message: "What department would you like to add? "
+        message: "What department would you like to add?"
     }
 
 ]).then(function(answers) {
-    db.query("INSERT INTO departments SET ?",
+    db.query('INSERT INTO departments SET ?',
         {
             name: answers.name
         },
         function(err, res) {
             if (err) throw err;
             console.log(`New department added successfully!`);
+            initialQuestion();
+        }
+    )
+})
+}
+
+function addRole() { 
+inquirer.prompt([
+    {
+        name: "title",
+        type: "input",
+        message: "What role would you like to add?"
+    },
+    {
+        name: "salary",
+        type: "input",
+        message: "What is the salary for the new role?"
+    },
+    {
+        name: "department_id",
+        type: "input",
+        message: "Please enter id of the department for this role",
+    }
+
+]).then(function(answers) {
+    db.query('INSERT INTO roles SET ?',
+        {
+            title: answers.title,
+            salary: answers.salary,
+            department_id: answers.department_id
+        },
+        function(err, res) {
+            if (err) throw err;
+            console.log(`New role added successfully!`);
             initialQuestion();
         }
     )
