@@ -23,7 +23,7 @@ const db = mysql.createConnection(
     console.log('Connected to the tracker database.')
 );
 
-
+//initial prompt plus decision tree
 const initialQuestion = () => {
     return inquirer.prompt([
         {
@@ -71,6 +71,7 @@ const initialQuestion = () => {
     )
 };
 
+//if view departments is selected
 const viewDepartments = () => {
 let sql = `SELECT * FROM departments`
 
@@ -83,6 +84,7 @@ db.query(sql, (err, res) => {
 });
 }
 
+//if view roles is selected
 const viewRoles = () => {
 let sql = `SELECT * FROM roles`
 
@@ -95,6 +97,7 @@ db.query(sql, (err, res) => {
 });
 }
 
+//if view employees is selected
 const viewEmployees = () => {
 let sql = `SELECT * FROM employees`
 
@@ -107,6 +110,7 @@ db.query(sql, (err, res) => {
 });
 }
 
+//if add a department is selected
 function addDepartment() { 
 inquirer.prompt([
     {
@@ -129,6 +133,7 @@ inquirer.prompt([
 })
 }
 
+//if add a role is selected
 function addRole() { 
 inquirer.prompt([
     {
@@ -163,6 +168,7 @@ inquirer.prompt([
 })
 }
 
+//if add an employee is selected
 function addEmployee() { 
 inquirer.prompt([
     {
@@ -203,6 +209,7 @@ inquirer.prompt([
 })
 }
 
+//if update employee role is selected
 function updateEmployeeRole() { 
 inquirer.prompt([
     {
