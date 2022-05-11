@@ -61,6 +61,9 @@ const initialQuestion = () => {
             case 'add an employee':
                 addEmployee();
             break;
+            case 'update an employee role':
+                updateEmployeeRole();
+            break;
             default: 
             initialQuestion();
         }
@@ -131,12 +134,12 @@ inquirer.prompt([
     {
         name: "title",
         type: "input",
-        message: "What role would you like to add?"
+        message: "What role would you like to add?",
     },
     {
         name: "salary",
         type: "input",
-        message: "What is the salary for the new role?"
+        message: "What is the salary for the new role?",
     },
     {
         name: "department_id",
@@ -165,12 +168,12 @@ inquirer.prompt([
     {
         name: "first_name",
         type: "input",
-        message: "What's the employee's first name?"
+        message: "What's the employee's first name?",
     },
     {
         name: "last_name",
         type: "input",
-        message: "What's the employee's last name?"
+        message: "What's the employee's last name?",
     },
     {
         name: "role_id",
@@ -189,7 +192,7 @@ inquirer.prompt([
             first_name: answers.first_name,
             last_name: answers.last_name,
             role_id: answers.role_id,
-            manager_id: answers.manager_id,
+            manager_id: answers.manager_id
         },
         function(err, res) {
             if (err) throw err;
@@ -197,6 +200,31 @@ inquirer.prompt([
             initialQuestion();
         }
     )
+})
+}
+
+function updateEmployeeRole() { 
+inquirer.prompt([
+    {
+        name: "id",
+        type: "input",
+        message: "What is the employee's id?",
+    },
+    {
+        name: "role_id",
+        type: "input",
+        message: "What is the employee's role id?",
+    }
+
+]).then(function(role_id, id) {
+    let sql = 'UPDATE employees SET role_id = ? WHERE id = ?'
+    let params = [role_id, id]
+
+    db.query(sql, params, (err, res) => {
+        if (err) throw err;
+        console.log(`Employee's role updated successfully!`);
+    })
+    initialQuestion();
 })
 }
 
